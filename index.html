@@ -169,6 +169,10 @@ async function askClaude(btn,out,prompt){
   catch(e){out.textContent=e&&e.code==='not_granted'?'Marking was not allowed for this page.':e&&e.code==='rate_limited'?'Too many requests just now. Try again in a minute.':'Could not reach Claude ('+((e&&e.message)||'error')+').'}
   btn.disabled=false;
 }
+function logSave(qid,ans,out,label){const L=DATA.log;if(!L||!safeUrl(L.form)){return false}
+  const body=new URLSearchParams();body.append(L.qid,qid);body.append(L.date,DATA.date_iso||'');body.append(L.answer,ans);
+  out.textContent='Saving…';
+  fetch(L.form,{method:'POST',mode:'no-cors',body}).then(()=>{out.textContent=(label||'Saved to your revision log ✓')+' '+new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}).catch(()=>{out.textContent='Couldn’t save (offline?). Your answer is still kept on this phone. Try again later.'});return true}
 function question(q){
   const box=el('div','q');
   box.appendChild(el('div','k',[q.kind_label,q.source].filter(Boolean).join(' · ')));
@@ -181,13 +185,8 @@ function question(q){
   box.appendChild(ta);
   const row=el('div','row');const fb=el('div','fb');
   const chatUrl=q.chat&&DATA.chats&&safeUrl(DATA.chats[q.chat]&&DATA.chats[q.chat].url);
-  if(q.mark&&chatUrl&&!window.claude){const nm=DATA.chats[q.chat].name||'study chat';const b=el('button','btn','Send to '+nm+' ↗');
-    b.onclick=()=>{if(!ta.value.trim()){fb.textContent='Write something first.';return}
-      const msg=`📝 From my morning brief: please mark this.\n${q.source?q.source+'\n':''}\nQuestion: ${q.mark.question||''}\n\nMy answer:\n${ta.value}\n\n(Reference for you, don't just reveal it: ${(q.mark.context||'').slice(0,1500)})`;
-      let ok=false;try{if(navigator.clipboard){navigator.clipboard.writeText(msg);ok=true}}catch(e){}
-      fb.textContent=ok?'Copied! Paste it into your '+nm+' and send.':'Opening your '+nm+'… copy your answer from the box above.';
-      const a=document.createElement('a');a.href=chatUrl;a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()};
-    row.appendChild(b)}
+  if(DATA.log){const b=el('button','btn','Save answer');
+    b.onclick=()=>{if(!ta.value.trim()){fb.textContent='Write something first.';return}logSave((DATA.date_iso||'')+':'+q.id,ta.value,fb)};row.appendChild(b)}
   else if(q.mark){const b=el('button','btn',(q.mark.button||'Check with Claude')+(window.claude?'':' in Claude ↗'));
     b.onclick=()=>{if(!ta.value.trim()){fb.textContent='Write something first.';return}
       const prompt=`${q.mark.instructions}\n\n--- QUESTION ---\n${q.mark.question||''}\n\n--- CONTEXT FOR THE MARKER ---\n${q.mark.context||''}\n\n--- STUDENT ANSWER ---\n${ta.value}\n\nReply in plain text (no markdown headings), under 180 words. Start with the mark or verdict on its own line, then 2-4 short bullet points ("- "), then one line starting "Try:" with a concrete improvement.`;
@@ -196,7 +195,10 @@ function question(q){
     const b2=el('button','btn ghost',q.reveal_label||'Show answer');b2.onclick=()=>{a.style.display=a.style.display==='block'?'none':'block';if(a.style.display==='block')math(a)};row.appendChild(b2);
     box.appendChild(row);box.appendChild(a)}else box.appendChild(row);
   box.appendChild(fb);
-  if(q.links&&q.links.length){const L=el('div','links row');for(const l of q.links){const u=safeUrl(l.url);if(!u)continue;const a=el('a',null,l.label);a.href=u;L.appendChild(a)}box.appendChild(L)}
+  {const L=el('div','links row');for(const l of (q.links||[])){const u=safeUrl(l.url);if(!u)continue;const a=el('a',null,l.label);a.href=u;L.appendChild(a)}
+    if(chatUrl&&q.mark){const nm=DATA.chats[q.chat].name||'study chat';const a=el('a',null,'Discuss in '+nm);a.href=chatUrl;a.target='_blank';a.rel='noopener';
+      a.addEventListener('click',()=>{const msg=`📝 From my morning brief:\n${q.source?q.source+'\n':''}\nQuestion: ${q.mark.question||''}\n\nMy answer:\n${ta.value||'(none yet)'}\n\n(Reference for you: ${(q.mark.context||'').slice(0,1500)})`;try{navigator.clipboard&&navigator.clipboard.writeText(msg)}catch(e){}fb.textContent='Copied for your '+nm+'. Paste it there.'});L.appendChild(a)}
+    if(L.childNodes.length)box.appendChild(L)}
   math(box);return box;
 }
 function chess(C){
@@ -277,6 +279,8 @@ function render(D){
   $('jprompt').textContent=D.journal_prompt||'';
   const j=$('journal'),k='jamie-journal-'+(D.date_iso||'');try{j.value=localStorage.getItem(k)||''}catch(e){}
   j.addEventListener('input',()=>{try{localStorage.setItem(k,j.value);$('jnote').textContent='Saved on this device.'}catch(e){}});
+  if(D.log){const b=el('button','btn','Save to journal log');b.style.marginTop='10px';j.insertAdjacentElement('afterend',b);
+    b.onclick=()=>{if(!j.value.trim()){$('jnote').textContent='Write something first.';return}logSave('journal-'+(D.date_iso||''),'Prompt: '+(D.journal_prompt||'')+'\n\n'+j.value,$('jnote'),'Saved to your journal log ✓')}}
 }
 const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 async function decrypt(pass,E){const enc=new TextEncoder();
