@@ -180,7 +180,15 @@ function question(q){
   ta.addEventListener('input',()=>{try{localStorage.setItem(key,ta.value)}catch(e){}});
   box.appendChild(ta);
   const row=el('div','row');const fb=el('div','fb');
-  if(q.mark){const b=el('button','btn',(q.mark.button||'Check with Claude')+(window.claude?'':' in Claude ↗'));
+  const chatUrl=q.chat&&DATA.chats&&safeUrl(DATA.chats[q.chat]&&DATA.chats[q.chat].url);
+  if(q.mark&&chatUrl&&!window.claude){const nm=DATA.chats[q.chat].name||'study chat';const b=el('button','btn','Send to '+nm+' ↗');
+    b.onclick=()=>{if(!ta.value.trim()){fb.textContent='Write something first.';return}
+      const msg=`📝 From my morning brief: please mark this.\n${q.source?q.source+'\n':''}\nQuestion: ${q.mark.question||''}\n\nMy answer:\n${ta.value}\n\n(Reference for you, don't just reveal it: ${(q.mark.context||'').slice(0,1500)})`;
+      let ok=false;try{if(navigator.clipboard){navigator.clipboard.writeText(msg);ok=true}}catch(e){}
+      fb.textContent=ok?'Copied! Paste it into your '+nm+' and send.':'Opening your '+nm+'… copy your answer from the box above.';
+      const a=document.createElement('a');a.href=chatUrl;a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()};
+    row.appendChild(b)}
+  else if(q.mark){const b=el('button','btn',(q.mark.button||'Check with Claude')+(window.claude?'':' in Claude ↗'));
     b.onclick=()=>{if(!ta.value.trim()){fb.textContent='Write something first.';return}
       const prompt=`${q.mark.instructions}\n\n--- QUESTION ---\n${q.mark.question||''}\n\n--- CONTEXT FOR THE MARKER ---\n${q.mark.context||''}\n\n--- STUDENT ANSWER ---\n${ta.value}\n\nReply in plain text (no markdown headings), under 180 words. Start with the mark or verdict on its own line, then 2-4 short bullet points ("- "), then one line starting "Try:" with a concrete improvement.`;
       askClaude(b,fb,prompt)};row.appendChild(b)}
