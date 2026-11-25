@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jamie's morning</title>
+<link rel="stylesheet" href="vendor/katex/katex.min.css">
+<style>
+/* VOICE: calm friend handing over the day. IDEA: a hand-drawn day-sketch, then a study notebook.
+   PICTURE: the day as one terrain stroke. COLOUR: warm paper, ink, one clay accent. TYPE: Fraunces headline, system sans body.
+   LAYOUT: wash band on top, paper band below, single column <=860px, sections in reading order. */
+@font-face{font-family:"Fraunces";src:url(data:font/woff2;base64,__FONT__) format("woff2");font-weight:600;font-style:normal;font-display:block}
+:root{color-scheme:light dark;--bg:light-dark(#FCFCFB,#1C1B18);--wash:light-dark(#F9F9F7,#22211D);--ink:light-dark(#2E2C27,#EDEBE4);--soft:light-dark(#6B6A63,#A9A79D);--grey:light-dark(#B4B3A8,#6B6A63);--hair:light-dark(#E4E3DC,#38362F);--clay:#C6613F;--clayh:#AE5133;--cell:light-dark(#fff,#2A2924);--word:light-dark(#F3EFE6,#3A342A);--curc:light-dark(#EBD9C9,#5A4535);--okc:light-dark(#EAF0E4,#2F3A2A);--light:light-dark(#F0D9B5,#B9A27E);--dark:light-dark(#B58863,#7D5C3F)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",sans-serif;-webkit-text-size-adjust:100%;overflow-x:clip}
+.top{background:var(--wash);border-bottom:1px solid var(--hair)}
+.wrap{max-width:860px;margin:0 auto;padding:36px 28px}
+.date{color:var(--soft);font-size:14px;margin:0 0 8px}
+h1{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:40px;line-height:1.15;margin:0 0 18px;letter-spacing:-.01em;text-wrap:balance}
+svg.terrain{width:100%;height:auto;display:block;color:var(--ink)}
+.acts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:6px}
+.act{padding:4px 18px 0}.act:first-child{padding-left:0}.act+.act{border-left:1px solid var(--hair)}
+.act b{display:block;font-size:14px;margin-bottom:4px}.act p{margin:0;color:var(--soft);font-size:15px;line-height:1.45}
+.strip{margin-top:20px;display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--soft)}
+.strip span b{color:var(--ink);font-weight:600}
+.meta{margin-top:10px;font-size:14px;color:var(--soft);line-height:1.5}
+h2{font-size:16px;font-weight:600;margin:38px 0 12px}
+h2:first-child{margin-top:0}
+h3{font-size:13px;font-weight:600;color:var(--soft);text-transform:uppercase;letter-spacing:.06em;margin:22px 0 8px}
+ol.items{list-style:none;margin:0;padding:0;counter-reset:n}
+ol.items li{counter-increment:n;display:grid;grid-template-columns:28px minmax(0,1fr);padding:9px 0;border-top:1px solid var(--hair)}
+ol.items li:first-child{border-top:none}
+ol.items li::before{content:counter(n);color:var(--grey);font-size:14px;padding-top:1px}
+.t{font-weight:600;font-size:15.5px;line-height:1.35}.t a{color:var(--ink);text-decoration:none}
+.s{color:var(--soft);font-size:15px;line-height:1.45;margin-top:2px}
+a.src{color:var(--soft);text-decoration:underline;text-decoration-color:var(--grey);text-underline-offset:2px}
+.timeline{display:grid;grid-template-columns:78px minmax(0,1fr);gap:6px 12px;font-size:15px;line-height:1.4}.timeline .d{color:var(--soft);white-space:nowrap}
+.note{color:var(--soft);font-size:14px;line-height:1.5}
+/* revision */
+.exam{border-top:1px solid var(--hair);padding-top:14px;margin-top:22px}
+.exam-h{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
+.exam-h b{font-size:16px}.exam-h span{color:var(--soft);font-size:14px}
+.q{margin:14px 0 0;padding:14px 16px;border:1px solid var(--hair);border-radius:10px;background:var(--cell)}
+.q .k{font-size:12px;color:var(--soft);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.q .p{font-size:16px;line-height:1.55}
+.q .lat{font-family:Georgia,serif;font-style:italic;font-size:17px;line-height:1.6;margin:6px 0;white-space:pre-line}
+.q textarea{margin-top:10px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.ans{margin-top:10px;padding:10px 12px;border-left:3px solid var(--clay);background:var(--wash);font-size:15px;line-height:1.55;white-space:pre-line;display:none}
+.ans.html{white-space:normal}
+.fb{margin-top:10px;font-size:15px;line-height:1.55;white-space:pre-line}
+.links a{color:var(--soft);font-size:14px;margin-right:14px}
+.btn{background:var(--clay);border:1px solid var(--clay);color:#FCFCFB;border-radius:8px;padding:9px 16px;font:500 13px -apple-system,"Segoe UI",sans-serif;cursor:pointer;min-height:40px}
+.btn:hover{background:var(--clayh)}.btn:disabled{opacity:.6;cursor:default}
+.btn.ghost{background:transparent;color:var(--soft);border-color:var(--hair)}
+textarea{width:100%;min-height:80px;border:1px solid var(--hair);border-radius:8px;padding:10px;font:16px -apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg);resize:vertical}
+details.stim summary{cursor:pointer;color:var(--soft);font-size:14px;margin-top:8px}
+/* crossword */
+.puz{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start}
+.grid{display:grid;grid-template-columns:repeat(5,52px);grid-template-rows:repeat(5,52px);border:2px solid var(--ink);width:max-content;max-width:100%}
+.cell{position:relative;border:1px solid var(--hair);background:var(--cell)}.cell.blk{background:var(--ink);border-color:var(--ink)}
+.cell input{width:100%;height:100%;border:0;background:transparent;text-align:center;font-size:24px;font-weight:600;text-transform:uppercase;color:var(--ink);caret-color:transparent;font-family:inherit;padding:8px 0 0;outline:none;border-radius:0}
+.cell .num{position:absolute;top:2px;left:4px;font-size:10px;color:var(--soft);pointer-events:none}
+.cell.word{background:var(--word)}.cell.cur{background:var(--curc)}.cell.bad input{color:var(--clay)}.cell.ok{background:var(--okc)}
+.clues{flex:1;min-width:240px;font-size:15px;line-height:1.5}
+.clues div{padding:2px 6px;border-radius:4px;cursor:pointer}.clues div.on{background:var(--word)}
+.clues b{display:inline-block;width:22px;color:var(--soft);font-weight:500}
+#timer{color:var(--soft);font-size:14px;font-variant-numeric:tabular-nums}#msg{font-size:15px;font-weight:600}
+/* chess */
+.chesswrap{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+.board{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);width:min(100%,400px);aspect-ratio:1;border:2px solid var(--ink);user-select:none;-webkit-user-select:none}
+.sq{display:flex;overflow:hidden;min-height:0;align-items:center;justify-content:center;font-size:min(8vw,38px);line-height:1;cursor:pointer;position:relative}
+.sq.l{background:var(--light)}.sq.d{background:var(--dark)}
+.sq.sel{box-shadow:inset 0 0 0 3px var(--clay)}.sq.last{box-shadow:inset 0 0 0 3px rgba(198,97,63,.55)}
+.sq .pc{font-family:"Segoe UI Symbol","Apple Symbols","Noto Sans Symbols2",serif}
+.sq .pc.w{color:#fff;text-shadow:0 0 2px #000,0 0 1px #000}.sq .pc.b{color:#111}
+.sq .co{position:absolute;font-size:9px;color:rgba(0,0,0,.45)}
+.chessside{flex:1;min-width:220px;font-size:15px;line-height:1.5}
+.prompt{font-size:16px;line-height:1.5;margin:0 0 10px}
+@media (max-width:640px){
+ .wrap{padding:26px 18px}h1{font-size:30px}
+ .acts{grid-template-columns:1fr}.act{padding:10px 0}.act+.act{border-left:none;border-top:1px solid var(--hair)}
+ .grid{grid-template-columns:repeat(5,58px);grid-template-rows:repeat(5,58px)}
+ .q{padding:12px}
+}
+</style>
+</head>
+<body>
+<div id="lock" style="display:none"><div class="wrap" style="max-width:420px;padding-top:18vh">
+  <h1 style="font-size:32px">Morning, Jamie.</h1>
+  <p class="note">Enter your passcode to open today's brief. It's remembered on this device.</p>
+  <form id="lockform" class="row"><input id="pass" type="password" inputmode="text" autocomplete="current-password" style="flex:1;min-width:0;font-size:16px;padding:10px;border:1px solid var(--hair);border-radius:8px;background:var(--cell);color:var(--ink)"><button class="btn" type="submit">Open</button></form>
+  <p class="note" id="lockmsg"></p></div></div>
+<div id="app" style="display:none">
+<section class="top"><div class="wrap">
+  <p class="date" id="dateLine"></p>
+  <h1 id="headline"></h1>
+  <svg class="terrain" id="terrain" viewBox="0 0 840 170" role="img" aria-label="Shape of the day"></svg>
+  <div class="acts" id="acts"></div>
+  <div class="strip" id="countdown"></div>
+  <div class="meta" id="meta"></div>
+</div></section>
+<section><div class="wrap" id="main">
+  <h2>Today</h2><ol class="items" id="today"></ol>
+  <h2 id="comingH">Coming up</h2><div class="timeline" id="coming"></div>
+  <h2 id="newsH">News</h2><div id="news"></div>
+  <h2 id="revH">Revision</h2><p class="note" id="revIntro"></p><div id="rev"></div>
+  <h2 id="chessH">Chess puzzle</h2><div id="chess"></div>
+  <h2>Mini crossword</h2>
+  <div class="puz"><div><div class="grid" id="grid"></div>
+    <div class="row"><button class="btn" id="check">Check</button><button class="btn ghost" id="reveal">Reveal</button><span id="timer">0:00</span><span id="msg"></span></div></div>
+    <div class="clues" id="clues"></div></div>
+  <h2>One line for today</h2>
+  <p class="prompt" id="jprompt"></p>
+  <textarea id="journal" placeholder="Just a sentence…"></textarea>
+  <p class="note" id="jnote"></p>
+</div></section>
+</div>
+<script src="vendor/katex/katex.min.js"></script>
+<script src="vendor/katex/auto-render.min.js"></script>
+<script src="vendor/chess.js"></script>
+<script>
+{
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+// allow a tiny safe subset of tags in our own bank HTML
+const rich=s=>esc(s).replace(/&lt;(\/?)(b|i|br|sub|sup)&gt;/g,'<$1$2>').replace(/&lt;br\s*\/&gt;/g,'<br>');
+const safeUrl=u=>/^https:\/\//.test(String(u||''))?String(u):null;
+const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
+const math=node=>{try{if(window.renderMathInElement)renderMathInElement(node,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})}catch(e){}};
+let sampleP=null;
+try{if(window.claude&&claude.use)sampleP=claude.use('sample')}catch(e){}
+
+function linkItem(li,it){
+  const d=el('div');const t=el('div','t');const u=safeUrl(it.url);
+  if(u){const a=el('a',null,it.title);a.href=u;t.appendChild(a)}else t.textContent=it.title;
+  d.appendChild(t);
+  if(it.text||it.source){const s=el('div','s');s.appendChild(document.createTextNode(it.text||''));
+    if(it.source){s.appendChild(document.createTextNode(it.text?' ':''));if(u){const a=el('a','src',it.source);a.href=u;s.appendChild(a)}else s.appendChild(document.createTextNode(it.source));s.appendChild(document.createTextNode('.'))}
+    d.appendChild(s)}
+  li.appendChild(d);
+}
+function terrain(T){
+  const s=$('terrain');if(!T||!T.points)return;const P=T.points;
+  let d='M'+P[0][0]+' '+P[0][1];
+  for(let i=0;i<P.length-1;i++){const p0=P[i-1]||P[i],p1=P[i],p2=P[i+1],p3=P[i+2]||p2;
+    const c1=[p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6],c2=[p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6];
+    d+=` C${c1[0].toFixed(1)} ${c1[1].toFixed(1)} ${c2[0].toFixed(1)} ${c2[1].toFixed(1)} ${p2[0]} ${p2[1]}`}
+  let h=`<path d="${d}" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>`;
+  for(const o of (T.dots||[]))h+=`<circle cx="${+o.x}" cy="${+o.y}" r="${+o.r||7}" fill="${o.grey?'#B4B3A8':'currentColor'}"/>`;
+  const m=T.motif;if(m){const x=+m.x,y=+m.y;
+    if(m.type==='flag')h+=`<g transform="translate(${x},${y})" stroke="#C6613F" stroke-width="2" fill="none" stroke-linecap="round"><line x1="0" y1="0" x2="0" y2="42"/><path d="M0 2 L22 8 L0 15" fill="#C6613F" stroke-linejoin="round"/></g>`;
+    if(m.type==='sun')h+=`<g transform="translate(${x},${y})" stroke="#C6613F" stroke-width="2" fill="none"><circle r="11"/>${[0,45,90,135,180,225,270,315].map(a=>`<line x1="${(16*Math.cos(a*Math.PI/180)).toFixed(1)}" y1="${(16*Math.sin(a*Math.PI/180)).toFixed(1)}" x2="${(22*Math.cos(a*Math.PI/180)).toFixed(1)}" y2="${(22*Math.sin(a*Math.PI/180)).toFixed(1)}"/>`).join('')}</g>`;
+    if(m.type==='moon')h+=`<path transform="translate(${x},${y})" d="M0 -14 A14 14 0 1 0 12 7 A11 11 0 1 1 0 -14Z" fill="#C6613F"/>`;
+    if(m.type==='birds')h+=`<g transform="translate(${x},${y})" stroke="#C6613F" stroke-width="2" fill="none" stroke-linecap="round"><path d="M0 0 q6 -7 12 0 q6 -7 12 0"/><path d="M30 -12 q5 -6 10 0 q5 -6 10 0"/></g>`;}
+  s.innerHTML=h;
+}
+async function askClaude(btn,out,prompt){
+  const sample=sampleP?await sampleP:null;
+  if(!sample){let p=prompt;if(p.length>7000)p=p.slice(0,7000);
+    const u='https://claude.ai/new?q='+encodeURIComponent(p);
+    try{navigator.clipboard&&navigator.clipboard.writeText(p).catch(()=>{})}catch(e){}
+    out.textContent='Opening Claude with your answer filled in (also copied, in case you need to paste it)…';
+    const a=document.createElement('a');a.href=u;a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>{out.textContent='';const l=el('a','src','If Claude didn’t open, tap here.');l.href=u;l.target='_blank';out.appendChild(l)},1200);return}
+  btn.disabled=true;out.textContent='Thinking…';
+  try{await sample(prompt,{modelTier:'default',onText:({text})=>{out.textContent=text}})}
+  catch(e){out.textContent=e&&e.code==='not_granted'?'Marking was not allowed for this page.':e&&e.code==='rate_limited'?'Too many requests just now. Try again in a minute.':'Could not reach Claude ('+((e&&e.message)||'error')+').'}
+  btn.disabled=false;
+}
+function question(q){
+  const box=el('div','q');
+  box.appendChild(el('div','k',[q.kind_label,q.source].filter(Boolean).join(' · ')));
+  if(q.latin){box.appendChild(el('div','lat',q.latin))}
+  const p=el('div','p');p.innerHTML=rich(q.prompt||'');box.appendChild(p);
+  if(q.stimulus_text){const dt=el('details','stim');dt.appendChild(el('summary',null,'Show the text'));dt.appendChild(el('div','lat',q.stimulus_text));box.appendChild(dt)}
+  const ta=el('textarea');ta.placeholder=q.placeholder||'Your answer (optional)…';
+  const key='jm-ans-'+(DATA.date_iso||'')+'-'+q.id;try{ta.value=localStorage.getItem(key)||''}catch(e){}
+  ta.addEventListener('input',()=>{try{localStorage.setItem(key,ta.value)}catch(e){}});
+  box.appendChild(ta);
+  const row=el('div','row');const fb=el('div','fb');
+  if(q.mark){const b=el('button','btn',(q.mark.button||'Check with Claude')+(window.claude?'':' in Claude ↗'));
+    b.onclick=()=>{if(!ta.value.trim()){fb.textContent='Write something first.';return}
+      const prompt=`${q.mark.instructions}\n\n--- QUESTION ---\n${q.mark.question||''}\n\n--- CONTEXT FOR THE MARKER ---\n${q.mark.context||''}\n\n--- STUDENT ANSWER ---\n${ta.value}\n\nReply in plain text (no markdown headings), under 180 words. Start with the mark or verdict on its own line, then 2-4 short bullet points ("- "), then one line starting "Try:" with a concrete improvement.`;
+      askClaude(b,fb,prompt)};row.appendChild(b)}
+  if(q.answer_html||q.answer_text){const a=el('div','ans'+(q.answer_html?' html':''));if(q.answer_html)a.innerHTML=rich(q.answer_html);else a.textContent=q.answer_text;
+    const b2=el('button','btn ghost',q.reveal_label||'Show answer');b2.onclick=()=>{a.style.display=a.style.display==='block'?'none':'block';if(a.style.display==='block')math(a)};row.appendChild(b2);
+    box.appendChild(row);box.appendChild(a)}else box.appendChild(row);
+  box.appendChild(fb);
+  if(q.links&&q.links.length){const L=el('div','links row');for(const l of q.links){const u=safeUrl(l.url);if(!u)continue;const a=el('a',null,l.label);a.href=u;L.appendChild(a)}box.appendChild(L)}
+  math(box);return box;
+}
+function chess(C){
+  const root=$('chess');if(!C||!C.fen||!window.Chess){$('chessH').style.display='none';root.style.display='none';return}
+  const g=new Chess(C.fen);const moves=C.moves||[];let idx=0,sel=null,last=null,done=false;
+  const me=g.turn();const flip=me==='b';
+  const wrap=el('div','chesswrap');const board=el('div','board');const side=el('div','chessside');
+  const info=el('p',null);info.innerHTML=`<b>${esc(C.title||'Puzzle')}</b>`;side.appendChild(info);
+  const status=el('p','note',(me==='w'?'White':'Black')+' to move. Tap a piece, then its square.');side.appendChild(status);
+  const row=el('div','row');const hint=el('button','btn ghost','Hint');const sol=el('button','btn ghost','Show solution');const reset=el('button','btn ghost','Reset');row.append(hint,sol,reset);side.appendChild(row);
+  const meta=el('p','note');const u=safeUrl(C.url);meta.appendChild(document.createTextNode(C.date_label||''));if(u){meta.appendChild(document.createTextNode(' '));const a=el('a','src','on chess.com');a.href=u;meta.appendChild(a)}side.appendChild(meta);
+  wrap.append(board,side);root.appendChild(wrap);
+  const G={wk:'♔',wq:'♕',wr:'♖',wb:'♗',wn:'♘',wp:'♙',bk:'♚',bq:'♛',br:'♜',bb:'♝',bn:'♞',bp:'♟'};
+  const files='abcdefgh';
+  function draw(){board.innerHTML='';for(let r=0;r<8;r++)for(let c=0;c<8;c++){const rr=flip?r:7-r,cc=flip?7-c:c;const sq=files[cc]+(rr+1);const d=el('div','sq '+((rr+cc)%2?'l':'d'));
+    if(sel===sq)d.classList.add('sel');if(last&&(last.from===sq||last.to===sq))d.classList.add('last');
+    const p=g.get(sq);if(p){const s=el('span','pc '+p.color,G[p.color+p.type]);d.appendChild(s)}
+    d.onclick=()=>tap(sq);board.appendChild(d)}}
+  function tap(sq){if(done)return;const p=g.get(sq);
+    if(sel){const mv=g.move({from:sel,to:sq,promotion:'q'});
+      if(mv){const want=moves[idx];if(want&&mv.san.replace(/[+#]/g,'')===want.replace(/[+#]/g,'')){last=mv;idx++;sel=null;draw();
+          if(idx>=moves.length){done=true;status.textContent='Solved! ✓'}else{status.textContent='Good move…';setTimeout(()=>{const r=g.move(moves[idx]);last=r;idx++;draw();if(idx>=moves.length){done=true;status.textContent='Solved! ✓'}else status.textContent='Your move.'},500)}}
+        else{g.undo();sel=null;draw();status.textContent='Not quite. Try again.'}
+        return}
+      if(p&&p.color===me){sel=sq;draw();return}sel=null;draw();return}
+    if(p&&p.color===me){sel=sq;draw()}}
+  hint.onclick=()=>{const want=moves[idx];if(!want)return;const tmp=new Chess(g.fen());const mv=tmp.move(want);if(mv){sel=mv.from;draw();status.textContent='Look at the highlighted piece.'}};
+  sol.onclick=()=>{status.textContent='Solution: '+moves.join(' ')};
+  reset.onclick=()=>{g.load(C.fen);idx=0;sel=null;last=null;done=false;draw();status.textContent=(me==='w'?'White':'Black')+' to move.'};
+  draw();
+}
+function crossword(PZ){
+  const SOL=PZ.SOL,CL=PZ.CL,N=5,grid=$('grid'),cells=[],nums={};let dir='a',cur=null,t0=null,timer=null,done=false,n=1;
+  for(let r=0;r<N;r++){cells[r]=[];for(let c=0;c<N;c++){const blk=SOL[r][c]==='#',d=el('div','cell'+(blk?' blk':''));
+    if(!blk){const sa=(c===0||SOL[r][c-1]==='#')&&(c<N-1&&SOL[r][c+1]!=='#'),sd=(r===0||SOL[r-1][c]==='#')&&(r<N-1&&SOL[r+1][c]!=='#');
+      if(sa||sd){d.appendChild(el('span','num',String(n)));nums[r+','+c]=n;n++}
+      const i=document.createElement('input');i.maxLength=1;i.setAttribute('autocomplete','off');i.setAttribute('autocapitalize','characters');
+      i.addEventListener('focus',()=>{if(cur&&cur[0]===r&&cur[1]===c)return;cur=[r,c];paint()});
+      i.addEventListener('mousedown',()=>{if(cur&&cur[0]===r&&cur[1]===c){dir=dir==='a'?'d':'a';paint()}});
+      i.addEventListener('keydown',e=>key(e,r,c));
+      i.addEventListener('input',()=>{const v=(i.value||'').replace(/[^a-z]/gi,'').slice(-1).toUpperCase();i.value=v;if(v){start();step(r,c,1)}chk()});
+      d.appendChild(i)}
+    grid.appendChild(d);cells[r][c]=d}}
+  const inp=(r,c)=>cells[r][c].querySelector('input');const open=(r,c)=>r>=0&&c>=0&&r<N&&c<N&&SOL[r][c]!=='#';
+  function wc(r,c,dd){const a=[],dr=dd==='d'?1:0,dc=dd==='a'?1:0;while(open(r-dr,c-dc)){r-=dr;c-=dc}while(open(r,c)){a.push([r,c]);r+=dr;c+=dc}return a}
+  function paint(){for(let r=0;r<N;r++)for(let c=0;c<N;c++)cells[r][c].classList.remove('word','cur');if(!cur)return;if(wc(cur[0],cur[1],dir).length<2)dir=dir==='a'?'d':'a';
+    wc(cur[0],cur[1],dir).forEach(p=>cells[p[0]][p[1]].classList.add('word'));cells[cur[0]][cur[1]].classList.add('cur');
+    const w=wc(cur[0],cur[1],dir),k=nums[w[0][0]+','+w[0][1]];document.querySelectorAll('.clues div').forEach(x=>x.classList.toggle('on',x.dataset.k===dir+k))}
+  function step(r,c,s){const w=wc(r,c,dir);let ix=0;w.forEach((p,j)=>{if(p[0]===r&&p[1]===c)ix=j});const nx=w[ix+s];if(nx)inp(nx[0],nx[1]).focus()}
+  function key(e,r,c){const k=e.key;if(k==='Backspace'){if(!inp(r,c).value){e.preventDefault();step(r,c,-1);inp(cur[0],cur[1]).value=''}return}
+    const m={ArrowRight:[0,1,'a'],ArrowLeft:[0,-1,'a'],ArrowDown:[1,0,'d'],ArrowUp:[-1,0,'d']}[k];
+    if(m){e.preventDefault();if(dir!==m[2]){dir=m[2];paint();return}let rr=r+m[0],cc=c+m[1];while(rr>=0&&cc>=0&&rr<N&&cc<N&&!open(rr,cc)){rr+=m[0];cc+=m[1]}if(open(rr,cc))inp(rr,cc).focus()}
+    if(k===' '||k==='Tab'){e.preventDefault();dir=dir==='a'?'d':'a';paint()}}
+  const cl=$('clues');[['a','Across'],['d','Down']].forEach(p=>{cl.appendChild(el('h3',null,p[1]));Object.keys(CL[p[0]]).forEach(k=>{const d=el('div');d.dataset.k=p[0]+k;d.appendChild(el('b',null,k));d.appendChild(document.createTextNode(CL[p[0]][k]));
+    d.onclick=()=>{for(const q in nums)if(nums[q]===+k){const rc=q.split(',');dir=p[0];cur=null;inp(+rc[0],+rc[1]).focus();cur=[+rc[0],+rc[1]];paint()}};cl.appendChild(d)})});
+  function start(){if(t0)return;t0=Date.now();timer=setInterval(tick,500)}
+  function tick(){const s=Math.floor((Date.now()-t0)/1000);$('timer').textContent=Math.floor(s/60)+':'+('0'+s%60).slice(-2)}
+  function chk(){if(done)return;for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(open(r,c)&&inp(r,c).value!==SOL[r][c])return;done=true;clearInterval(timer);tick();
+    for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(open(r,c))cells[r][c].classList.add('ok');$('msg').textContent='Solved in '+$('timer').textContent+' ☀'}
+  $('check').onclick=()=>{for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(open(r,c)){const v=inp(r,c).value;cells[r][c].classList.toggle('bad',!!v&&v!==SOL[r][c])}};
+  $('reveal').onclick=()=>{if(!cur)return;wc(cur[0],cur[1],dir).forEach(p=>{inp(p[0],p[1]).value=SOL[p[0]][p[1]];cells[p[0]][p[1]].classList.remove('bad')});chk()};
+}
+let DATA={};
+function render(D){
+  DATA=D;$('dateLine').textContent=D.date_line||'';$('headline').textContent=D.headline||'';terrain(D.terrain);
+  const A=$('acts');(D.acts||[]).forEach(a=>{const d=el('div','act');d.appendChild(el('b',null,a.time));d.appendChild(el('p',null,a.text));A.appendChild(d)});
+  const cd=$('countdown');(D.countdown||[]).forEach(c=>{const s=el('span');const b=el('b',null,c.days===0?'today':c.days===1?'tomorrow':`${c.days} days`);s.appendChild(document.createTextNode(c.label+' '));s.appendChild(b);cd.appendChild(s)});
+  $('meta').textContent=[D.weather,D.moon,D.sky].filter(Boolean).join('  ·  ');
+  const T=$('today');(D.today||[]).forEach(it=>{const li=el('li');linkItem(li,it);T.appendChild(li)});
+  const C=$('coming');if(!(D.coming||[]).length)$('comingH').style.display='none';(D.coming||[]).forEach(c=>{C.appendChild(el('div','d',c.d));const x=el('div');if(c.bold)x.appendChild(el('b',null,c.text));else x.textContent=c.text;C.appendChild(x)});
+  const NW=$('news');(D.news||[]).forEach(sec=>{NW.appendChild(el('h3',null,sec.heading));const ol=el('ol','items');sec.items.forEach(it=>{const li=el('li');linkItem(li,it);ol.appendChild(li)});NW.appendChild(ol)});
+  const R=D.revision||{};$('revIntro').textContent=R.intro||'';const RV=$('rev');
+  (R.blocks||[]).forEach(b=>{const sec=el('div','exam');const h=el('div','exam-h');h.appendChild(el('b',null,b.subject));h.appendChild(el('span',null,b.exam_label||''));sec.appendChild(h);
+    (b.questions||[]).forEach(q=>sec.appendChild(question(q)));RV.appendChild(sec)});
+  if(!(R.blocks||[]).length){$('revH').style.display='none'}
+  chess(D.chess);
+  if(D.puzzle)crossword(D.puzzle);
+  $('jprompt').textContent=D.journal_prompt||'';
+  const j=$('journal'),k='jamie-journal-'+(D.date_iso||'');try{j.value=localStorage.getItem(k)||''}catch(e){}
+  j.addEventListener('input',()=>{try{localStorage.setItem(k,j.value);$('jnote').textContent='Saved on this device.'}catch(e){}});
+}
+const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function decrypt(pass,E){const enc=new TextEncoder();
+  const base=await crypto.subtle.importKey('raw',enc.encode(pass),'PBKDF2',false,['deriveKey']);
+  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(E.salt),iterations:E.iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
+  const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(E.iv)},key,b64(E.ct));return JSON.parse(new TextDecoder().decode(pt))}
+let ENC=null;
+function showLock(msg){$('app').style.display='none';$('lock').style.display='block';$('lockmsg').textContent=msg||'';setTimeout(()=>$('pass').focus(),50)}
+async function tryOpen(pass,remember){try{const D=await decrypt(pass,ENC);if(remember){try{localStorage.setItem('jm-pass',pass)}catch(e){}}
+  $('lock').style.display='none';$('app').style.display='block';render(D);return true}catch(e){return false}}
+$('lockform').addEventListener('submit',async e=>{e.preventDefault();$('lockmsg').textContent='Unlocking…';if(!await tryOpen($('pass').value,true))$('lockmsg').textContent='That passcode didn’t work.'});
+fetch('data.enc.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(async E=>{ENC=E;let p=null;try{p=localStorage.getItem('jm-pass')}catch(e){}
+  if(p&&await tryOpen(p,false))return;showLock()}).catch(e=>{$('lock').style.display='block';$('lockmsg').textContent='Today’s brief could not load. Check your connection.'});
+}
+</script>
+</body>
+</html>
