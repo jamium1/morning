@@ -8,7 +8,7 @@ def text(s):
     if not s: return ''
     s = re.sub(r'<\s*br\s*/?>', '\n', s)
     s = re.sub(r'</(p|li|div|h\d)>', '\n', s)
-    s = re.sub(r'<[^>]+>', '', s)
+    s = re.sub(r'</?[A-Za-z][^>]*>', '', s)
     s = H.unescape(s)
     return re.sub(r'\n{3,}', '\n\n', s).strip()
 
