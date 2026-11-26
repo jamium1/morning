@@ -271,6 +271,8 @@ function render(D){
   const C=$('coming');if(!(D.coming||[]).length)$('comingH').style.display='none';(D.coming||[]).forEach(c=>{C.appendChild(el('div','d',c.d));const x=el('div');if(c.bold)x.appendChild(el('b',null,c.text));else x.textContent=c.text;C.appendChild(x)});
   const NW=$('news');(D.news||[]).forEach(sec=>{NW.appendChild(el('h3',null,sec.heading));const ol=el('ol','items');sec.items.forEach(it=>{const li=el('li');linkItem(li,it);ol.appendChild(li)});NW.appendChild(ol)});
   const R=D.revision||{};$('revIntro').textContent=R.intro||'';const RV=$('rev');
+  {const A=D.chats&&D.chats.admin;const u=A&&safeUrl(A.url);if(u){const row=el('div','row');row.style.margin='8px 0 18px';const a=el('a','btn','Update my questions ↗');a.href=u;a.target='_blank';a.rel='noopener';const n=el('span','note');n.style.marginLeft='10px';
+    a.addEventListener('click',()=>{try{navigator.clipboard&&navigator.clipboard.writeText('update')}catch(e){}n.textContent='Copied "update". Paste it into the chat that opens.'});row.appendChild(a);row.appendChild(n);$('revIntro').insertAdjacentElement('afterend',row)}}
   (R.blocks||[]).forEach(b=>{const sec=el('div','exam');const h=el('div','exam-h');h.appendChild(el('b',null,b.subject));h.appendChild(el('span',null,b.exam_label||''));sec.appendChild(h);
     (b.questions||[]).forEach(q=>sec.appendChild(question(q)));RV.appendChild(sec)});
   if(!(R.blocks||[]).length){$('revH').style.display='none'}
