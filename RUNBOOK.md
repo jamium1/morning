@@ -43,7 +43,7 @@ Build today's edition of Jamie's morning brief (Australia/Sydney date) and publi
 
 6) puzzle (MORNING only): 5x5 mini crossword, black squares top-left and bottom-right, SOL = 5 strings with "#". `python3 banks/crossword_gen.py SEED` (wordfreq installed with pip --break-system-packages). Loop seeds until all 10 words are distinct common English words; reject proper nouns, brands, places, abbreviations, slang, anything crude. Never reuse a grid. CL.a keys 1,5,6,7,8; CL.d keys 1,2,3,4,5. Fresh, light, slightly witty clues, each checked against its position.
 
-7) journal_prompt (MORNING only): short, different every day, varied in kind.
+7) journal_prompt (MORNING only): short, different every day, varied in kind. Always a brand-new prompt each morning, whether or not Jamie wrote yesterday's; never carry it over. It is not a revision question, and UPDATE mode leaves it alone.
 
 8) Revision log (after pushing): run `python3 banks/questions_rows.py data.json`, read Questions!A:A of spreadsheet 1-ME7vXFur4gn-8dVhjkMk7moO4DMjcL1M7aqw0xEcOs, and append_values only the rows whose QID isn't already there to "Questions!A1". This append is the only sheet write: never touch "Form responses 1" or any other file.
 
