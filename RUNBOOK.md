@@ -49,5 +49,5 @@ Build today's edition of Jamie's Daily Paper (formerly "morning brief") (Austral
 
 ## Finish
 - Send Jamie a push notification (PushNotification tool, load via ToolSearch) with one short line, e.g. "Morning, Jamie: school till 3:05, Ext 2 + Latin in 5 days. 3 Ext 2 Qs, Latin lines and a chess puzzle are ready" (UPDATE: "Updated: 5 new questions in place of the ones you did; 8 untouched ones kept"). If anything failed and the Daily Paper wasn't pushed, the line says so and names the step. Never include a chess result.
-- Scheduling: the recurring "Daily Paper" task (5:07am daily) brings the run here. Do NOT schedule extra runs with send_later.
+- Scheduling (DAILY mode, at the end): call list_triggers. If no enabled "Daily Paper" task is due to fire again (a daily repeat, or a one-off for tomorrow), schedule tomorrow's run with send_later from this chat: at = tomorrow 05:07 in [Australia/Sydney], name "Daily Paper", message "Daily Paper run: follow /home/claude/morning/RUNBOOK.md in DAILY mode.", initiation "human_schedule". Do this even if the build failed, so the chain never breaks.
 - Do not create, edit or delete anything else: no calendar, slides, doc, Gmail or artifact changes, no sheet changes beyond step 8, no repo changes beyond data.enc.json and deliberate bank updates.
