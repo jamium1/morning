@@ -186,7 +186,7 @@ function question(q){
   const row=el('div','row');const fb=el('div','fb');
   const chatUrl=q.chat&&DATA.chats&&safeUrl(DATA.chats[q.chat]&&DATA.chats[q.chat].url);
   if(DATA.log){const b=el('button','btn','Save answer');
-    b.onclick=()=>{if(!ta.value.trim()){fb.textContent='Write something first.';return}logSave((DATA.date_iso||'')+':'+q.id,ta.value,fb)};row.appendChild(b)}
+    b.onclick=()=>{if(!ta.value.trim()){fb.textContent='Write something first.';return}logSave(q.qid||((DATA.date_iso||'')+':'+q.id),ta.value,fb)};row.appendChild(b)}
   else if(q.mark){const b=el('button','btn',(q.mark.button||'Check with Claude')+(window.claude?'':' in Claude ↗'));
     b.onclick=()=>{if(!ta.value.trim()){fb.textContent='Write something first.';return}
       const prompt=`${q.mark.instructions}\n\n--- QUESTION ---\n${q.mark.question||''}\n\n--- CONTEXT FOR THE MARKER ---\n${q.mark.context||''}\n\n--- STUDENT ANSWER ---\n${ta.value}\n\nReply in plain text (no markdown headings), under 180 words. Start with the mark or verdict on its own line, then 2-4 short bullet points ("- "), then one line starting "Try:" with a concrete improvement.`;

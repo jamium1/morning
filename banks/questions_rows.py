@@ -29,7 +29,7 @@ for b in d['revision']['blocks']:
         core = re.sub(r"^(Reference solution|Student's own reference translation):\s*", '', notes)
         if notes and (not model or (core not in model and model not in notes)):
             model = (model + '\n\nMarking notes: ' + notes).strip()
-        rows.append([f"{date}:{q['id']}", date, b['subject'], text(q.get('kind_label')),
+        rows.append([q.get('qid') or f"{date}:{q['id']}", date, b['subject'], text(q.get('kind_label')),
                      text(q.get('source')), '\n\n'.join(p for p in parts if p), model, 'Yes'])
 if d.get('journal_prompt'):
     rows.append([f"journal-{date}", date, 'Journal', 'Journal entry', '', d['journal_prompt'], '', 'No'])
