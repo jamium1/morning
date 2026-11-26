@@ -1057,6 +1057,78 @@
    "q": "$P$ has position vector $3\\mathbf i+4\\mathbf j$, and the line $l$ has equation $x-2y=0$.<br>(i) Find the projection of $\\overrightarrow{OP}$ onto the line $l$. <b>[2]</b><br>(ii) Hence find the exact perpendicular distance from $P$ to $l$. <b>[1]</b>",
    "sol": "(i) $l$ passes through $O$ with direction $2\\mathbf i+\\mathbf j$. Projection $=\\frac{6+4}{5}(2\\mathbf i+\\mathbf j)=4\\mathbf i+2\\mathbf j$.<br>(ii) Distance $=|(3\\mathbf i+4\\mathbf j)-(4\\mathbf i+2\\mathbf j)|=|-\\mathbf i+2\\mathbf j|=\\sqrt5$.",
    "field": "Ascham+2025+w.+sol"
+  },
+  {
+   "id": "GIR23E1-13a",
+   "source": "Girraween 2023 Ext 1 Trial, Q13(a)",
+   "base": 5338,
+   "qpage": 8,
+   "spage": 36,
+   "topic": "t-formulae",
+   "marks": 3,
+   "q": "If $t=\\tan\\dfrac x2$, show that $\\dfrac{1+\\cos x+\\sin x}{1-\\cos x+\\sin x}=\\cot\\dfrac x2$.",
+   "sol": "Multiply top and bottom by $1+t^2$. Numerator: $(1+t^2)+(1-t^2)+2t=2(1+t)$. Denominator: $(1+t^2)-(1-t^2)+2t=2t(1+t)$.<br>The ratio is $\\frac1t=\\cot\\frac x2$.",
+   "field": "Girraween+2023+w.+sol"
+  },
+  {
+   "id": "SBHS26E1-11e",
+   "source": "Sydney Boys 2026 Ext 1 Trial, Q11(e)",
+   "base": 5338,
+   "qpage": 7,
+   "spage": 15,
+   "topic": "t-formulae",
+   "marks": 3,
+   "q": "Prove that $\\tan\\left(\\theta+\\dfrac\\pi4\\right)=\\sec2\\theta+\\tan2\\theta$ by using the substitution $t=\\tan\\theta$.",
+   "sol": "LHS $=\\frac{t+1}{1-t}$.<br>RHS $=\\frac{1+t^2}{1-t^2}+\\frac{2t}{1-t^2}=\\frac{(1+t)^2}{(1-t)(1+t)}=\\frac{1+t}{1-t}$. So LHS $=$ RHS.",
+   "field": "Sydney+Boys+2026+w.+sol"
+  },
+  {
+   "id": "SGHS24E1-12b",
+   "source": "Sydney Girls 2024 Ext 1 Trial, Q12(b)",
+   "base": 5338,
+   "qpage": 6,
+   "spage": 12,
+   "topic": "t-formulae",
+   "marks": 2,
+   "q": "By making the substitution $t=\\tan\\dfrac\\theta2$, or otherwise, show that $\\operatorname{cosec}\\theta+\\cot\\theta=\\cot\\dfrac\\theta2$.",
+   "sol": "$\\operatorname{cosec}\\theta+\\cot\\theta=\\frac{1+t^2}{2t}+\\frac{1-t^2}{2t}=\\frac{2}{2t}=\\frac1t=\\cot\\frac\\theta2$.",
+   "field": "Sydney+Girls+2024+w.+sol"
+  },
+  {
+   "id": "SGS22E1-14d",
+   "source": "Sydney Grammar 2022 Ext 1 Trial, Q14(d)",
+   "base": 5338,
+   "qpage": 7,
+   "spage": 19,
+   "topic": "t-formulae",
+   "marks": 3,
+   "q": "Use the substitution $t=\\tan\\dfrac\\theta2$ to solve $\\sin\\theta+2\\cos\\theta=2$ for $0^\\circ\\le\\theta\\le360^\\circ$, giving answers to the nearest degree.",
+   "sol": "$2t+2(1-t^2)=2(1+t^2)\\Rightarrow2t-4t^2=0\\Rightarrow t=0$ or $t=\\frac12$.<br>$t=0$: $\\theta=0^\\circ,360^\\circ$. $t=\\frac12$: $\\frac\\theta2\\approx26.57^\\circ$, so $\\theta\\approx53^\\circ$.<br>Test $\\theta=180^\\circ$: $0-2\\ne2$, so it isn't a solution.<br>$\\theta=0^\\circ,53^\\circ,360^\\circ$.",
+   "field": "Sydney+Grammar+2022+w.+sol"
+  },
+  {
+   "id": "NSG22E1-14b",
+   "source": "North Sydney Girls 2022 Ext 1 Trial, Q14(b)",
+   "base": 5338,
+   "qpage": 11,
+   "spage": 14,
+   "topic": "product-to-sum",
+   "marks": 4,
+   "q": "(i) Write $2\\sin x\\sin\\big((2k+1)x\\big)$ as the difference of two cosine functions. <b>[1]</b><br>(ii) Prove by mathematical induction that for all integers $n\\ge1$, $\\sin x+\\sin3x+\\sin5x+\\cdots+\\sin(2n-1)x=\\dfrac{1-\\cos2nx}{2\\sin x}$. <b>[3]</b>",
+   "sol": "(i) $2\\sin A\\sin B=\\cos(A-B)-\\cos(A+B)$, so $2\\sin x\\sin(2k+1)x=\\cos2kx-\\cos(2k+2)x$.<br>(ii) $n=1$: RHS $=\\frac{1-\\cos2x}{2\\sin x}=\\frac{2\\sin^2x}{2\\sin x}=\\sin x$ ✓.<br>Assume it holds for $n=k$. Then the sum to $n=k+1$ is $\\frac{1-\\cos2kx}{2\\sin x}+\\sin(2k+1)x=\\frac{1-\\cos2kx+2\\sin x\\sin(2k+1)x}{2\\sin x}$. By (i) this is $\\frac{1-\\cos2kx+\\cos2kx-\\cos(2k+2)x}{2\\sin x}=\\frac{1-\\cos2(k+1)x}{2\\sin x}$ ✓.",
+   "field": "North+Sydney+Girls+2022+w.+sol"
+  },
+  {
+   "id": "SBHS25E1-13c",
+   "source": "Sydney Boys 2025 Ext 1 Trial, Q13(c)",
+   "base": 5338,
+   "qpage": 12,
+   "spage": 16,
+   "topic": "product-to-sum",
+   "marks": 3,
+   "q": "(i) Explain why $\\sin\\theta=\\sin2\\theta\\cos\\theta-\\sin\\theta\\cos2\\theta$. <b>[1]</b><br>(ii) Hence prove that, for $n\\in\\mathbb Z^+$, $\\displaystyle\\sum_{k=0}^{n}\\tan(2^kx)\\sec(2^{k+1}x)=\\tan(2^{n+1}x)-\\tan x$. <b>[2]</b>",
+   "sol": "(i) The RHS is $\\sin(2\\theta-\\theta)$ by the compound-angle formula.<br>(ii) $\\tan\\theta\\sec2\\theta=\\frac{\\sin\\theta}{\\cos\\theta\\cos2\\theta}=\\frac{\\sin2\\theta\\cos\\theta-\\cos2\\theta\\sin\\theta}{\\cos\\theta\\cos2\\theta}=\\tan2\\theta-\\tan\\theta$.<br>With $\\theta=2^kx$, the sum telescopes: $\\sum_{k=0}^n\\left(\\tan2^{k+1}x-\\tan2^kx\\right)=\\tan2^{n+1}x-\\tan x$.",
+   "field": "Sydney+Boys+2025+w.+sol"
   }
  ]
 }
