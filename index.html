@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Jamie's morning</title>
+<title>Jamie's Daily Paper</title>
 <link rel="stylesheet" href="vendor/katex/katex.min.css">
 <style>
 /* VOICE: calm friend handing over the day. IDEA: a hand-drawn day-sketch, then a study notebook.
@@ -88,7 +88,7 @@ details.stim summary{cursor:pointer;color:var(--soft);font-size:14px;margin-top:
 </head>
 <body>
 <div id="lock" style="display:none"><div class="wrap" style="max-width:420px;padding-top:18vh">
-  <h1 style="font-size:32px">Morning, Jamie.</h1>
+  <h1 style="font-size:32px">The Daily Paper</h1>
   <p class="note">Enter your passcode to open today's brief. It's remembered on this device.</p>
   <form id="lockform" class="row"><input id="pass" type="password" inputmode="text" autocomplete="current-password" style="flex:1;min-width:0;font-size:16px;padding:10px;border:1px solid var(--hair);border-radius:8px;background:var(--cell);color:var(--ink)"><button class="btn" type="submit">Open</button></form>
   <p class="note" id="lockmsg"></p></div></div>
@@ -197,7 +197,7 @@ function question(q){
   box.appendChild(fb);
   {const L=el('div','links row');for(const l of (q.links||[])){const u=safeUrl(l.url);if(!u)continue;const a=el('a',null,l.label);a.href=u;L.appendChild(a)}
     if(chatUrl&&q.mark){const nm=DATA.chats[q.chat].name||'study chat';const a=el('a',null,'Discuss in '+nm);a.href=chatUrl;a.target='_blank';a.rel='noopener';
-      a.addEventListener('click',()=>{const msg=`📝 From my morning brief:\n${q.source?q.source+'\n':''}\nQuestion: ${q.mark.question||''}\n\nMy answer:\n${ta.value||'(none yet)'}\n\n(Reference for you: ${(q.mark.context||'').slice(0,1500)})`;try{navigator.clipboard&&navigator.clipboard.writeText(msg)}catch(e){}fb.textContent='Copied for your '+nm+'. Paste it there.'});L.appendChild(a)}
+      a.addEventListener('click',()=>{const msg=`📝 From my Daily Paper:\n${q.source?q.source+'\n':''}\nQuestion: ${q.mark.question||''}\n\nMy answer:\n${ta.value||'(none yet)'}\n\n(Reference for you: ${(q.mark.context||'').slice(0,1500)})`;try{navigator.clipboard&&navigator.clipboard.writeText(msg)}catch(e){}fb.textContent='Copied for your '+nm+'. Paste it there.'});L.appendChild(a)}
     if(L.childNodes.length)box.appendChild(L)}
   math(box);return box;
 }
