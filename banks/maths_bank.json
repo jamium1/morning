@@ -1129,6 +1129,30 @@
    "q": "(i) Explain why $\\sin\\theta=\\sin2\\theta\\cos\\theta-\\sin\\theta\\cos2\\theta$. <b>[1]</b><br>(ii) Hence prove that, for $n\\in\\mathbb Z^+$, $\\displaystyle\\sum_{k=0}^{n}\\tan(2^kx)\\sec(2^{k+1}x)=\\tan(2^{n+1}x)-\\tan x$. <b>[2]</b>",
    "sol": "(i) The RHS is $\\sin(2\\theta-\\theta)$ by the compound-angle formula.<br>(ii) $\\tan\\theta\\sec2\\theta=\\frac{\\sin\\theta}{\\cos\\theta\\cos2\\theta}=\\frac{\\sin2\\theta\\cos\\theta-\\cos2\\theta\\sin\\theta}{\\cos\\theta\\cos2\\theta}=\\tan2\\theta-\\tan\\theta$.<br>With $\\theta=2^kx$, the sum telescopes: $\\sum_{k=0}^n\\left(\\tan2^{k+1}x-\\tan2^kx\\right)=\\tan2^{n+1}x-\\tan x$.",
    "field": "Sydney+Boys+2025+w.+sol"
+  },
+  {
+   "id": "HUR22-15b",
+   "source": "Hurlstone 2022 Trial, Q15(b)",
+   "base": 5348,
+   "qpage": 10,
+   "spage": 18,
+   "topic": "complex",
+   "marks": 5,
+   "q": "(i) Using De Moivre's theorem, show that $\\tan5\\theta=\\dfrac{5\\tan\\theta-10\\tan^3\\theta+\\tan^5\\theta}{1-10\\tan^2\\theta+5\\tan^4\\theta}$. <b>[3]</b><br>(ii) Hence show that $\\tan^2\\dfrac\\pi5$ and $\\tan^2\\dfrac{2\\pi}5$ are the roots of $x^2-10x+5=0$. <b>[2]</b>",
+   "sol": "(i) Expand $(c+is)^5=\\cos5\\theta+i\\sin5\\theta$: the real part is $c^5-10c^3s^2+5cs^4$ and the imaginary part is $5c^4s-10c^2s^3+s^5$. Divide the imaginary part by the real part, then divide top and bottom by $c^5$.<br>(ii) $\\tan5\\theta=0$ for $\\theta=\\frac{k\\pi}5$, so $t=\\tan\\frac{k\\pi}5$ ($k=0,\\dots,4$) are the roots of $t^5-10t^3+5t=0$. The non-zero ones satisfy $t^4-10t^2+5=0$. With $x=t^2$, $x^2-10x+5=0$ has roots $\\tan^2\\frac{k\\pi}5$, $k=1,2,3,4$. Since $\\tan^2\\frac{3\\pi}5=\\tan^2\\frac{2\\pi}5$ and $\\tan^2\\frac{4\\pi}5=\\tan^2\\frac\\pi5$, and these two values differ, the roots are $\\tan^2\\frac\\pi5$ and $\\tan^2\\frac{2\\pi}5$.",
+   "field": "Hurlstone+2022+w.+sol"
+  },
+  {
+   "id": "STHS23-14b",
+   "source": "Sydney Tech 2023 Trial, Q14(b)",
+   "base": 5348,
+   "qpage": 9,
+   "spage": 22,
+   "topic": "complex",
+   "marks": 4,
+   "q": "Let $z=\\cos\\theta+i\\sin\\theta$.<br>(i) Using De Moivre's theorem, show that $z^n+\\dfrac1{z^n}=2\\cos n\\theta$ for $n\\in\\mathbb Z$. <b>[2]</b><br>(ii) Hence express $\\cos^6\\theta$ in the form $A\\cos6\\theta+B\\cos4\\theta+C\\cos2\\theta+D$. <b>[2]</b>",
+   "sol": "(i) $z^n=\\cos n\\theta+i\\sin n\\theta$ and $z^{-n}=\\cos n\\theta-i\\sin n\\theta$; add them.<br>(ii) $(2\\cos\\theta)^6=\\left(z+\\frac1z\\right)^6=\\left(z^6+\\frac1{z^6}\\right)+6\\left(z^4+\\frac1{z^4}\\right)+15\\left(z^2+\\frac1{z^2}\\right)+20$.<br>So $64\\cos^6\\theta=2\\cos6\\theta+12\\cos4\\theta+30\\cos2\\theta+20$, giving $\\cos^6\\theta=\\frac1{32}\\cos6\\theta+\\frac3{16}\\cos4\\theta+\\frac{15}{32}\\cos2\\theta+\\frac5{16}$.",
+   "field": "Sydney+Tech+2023+w.+sol"
   }
  ]
 }
