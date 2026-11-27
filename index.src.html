@@ -26,6 +26,11 @@ svg.terrain{width:100%;height:auto;display:block;color:var(--ink)}
 .strip span b{color:var(--ink);font-weight:600}
 .meta{margin-top:10px;font-size:14px;color:var(--soft);line-height:1.5}
 h2{font-size:16px;font-weight:600;margin:38px 0 12px}
+.coll>h2,.coll .exam-h{cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.coll>h2::before,.coll .exam-h b::before{content:'▾';display:inline-block;width:1.1em;color:var(--soft);transition:transform .15s}
+.coll>h2.shut::before,.coll .exam-h.shut b::before{transform:rotate(-90deg)}
+.coll .hidden{display:none!important}
+
 h2:first-child{margin-top:0}
 h3{font-size:13px;font-weight:600;color:var(--soft);text-transform:uppercase;letter-spacing:.06em;margin:22px 0 8px}
 ol.items{list-style:none;margin:0;padding:0;counter-reset:n}
@@ -284,6 +289,17 @@ function render(D){
   if(D.log){const b=el('button','btn','Save to journal log');b.style.marginTop='10px';j.insertAdjacentElement('afterend',b);
     b.onclick=()=>{if(!j.value.trim()){$('jnote').textContent='Write something first.';return}logSave('journal-'+(D.date_iso||''),'Prompt: '+(D.journal_prompt||'')+'\n\n'+j.value,$('jnote'),'Saved to your journal log ✓')}}
 }
+// Collapsible sections. To undo: set COLLAPSIBLE=false (or remove this block). Open/closed state is remembered on this device.
+const COLLAPSIBLE=true;
+function collapsible(){if(!COLLAPSIBLE)return;const main=$('main');main.classList.add('coll');let st={};try{st=JSON.parse(localStorage.getItem('dp-collapsed')||'{}')}catch(e){}
+  const save=()=>{try{localStorage.setItem('dp-collapsed',JSON.stringify(st))}catch(e){}};
+  const hs=[...main.children].filter(n=>n.tagName==='H2'&&n.style.display!=='none');
+  hs.forEach(h=>{const parts=[];let n=h.nextElementSibling;while(n&&n.tagName!=='H2'){parts.push(n);n=n.nextElementSibling}
+    const key='s:'+h.textContent.trim();const set=v=>{h.classList.toggle('shut',v);parts.forEach(p=>p.classList.toggle('hidden',v))};
+    set(!!st[key]);h.addEventListener('click',()=>{st[key]=!st[key];save();set(st[key])})});
+  main.querySelectorAll('.exam').forEach(ex=>{const h=ex.querySelector('.exam-h');if(!h)return;const key='e:'+(h.querySelector('b')||h).textContent.trim();
+    const set=v=>{h.classList.toggle('shut',v);[...ex.children].forEach(c=>{if(c!==h)c.classList.toggle('hidden',v)})};
+    set(!!st[key]);h.addEventListener('click',()=>{st[key]=!st[key];save();set(st[key])})})}
 const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 async function decrypt(pass,E){const enc=new TextEncoder();
   const base=await crypto.subtle.importKey('raw',enc.encode(pass),'PBKDF2',false,['deriveKey']);
@@ -292,7 +308,7 @@ async function decrypt(pass,E){const enc=new TextEncoder();
 let ENC=null;
 function showLock(msg){$('app').style.display='none';$('lock').style.display='block';$('lockmsg').textContent=msg||'';setTimeout(()=>$('pass').focus(),50)}
 async function tryOpen(pass,remember){try{const D=await decrypt(pass,ENC);if(remember){try{localStorage.setItem('jm-pass',pass)}catch(e){}}
-  $('lock').style.display='none';$('app').style.display='block';render(D);return true}catch(e){return false}}
+  $('lock').style.display='none';$('app').style.display='block';render(D);try{collapsible()}catch(e){}return true}catch(e){return false}}
 $('lockform').addEventListener('submit',async e=>{e.preventDefault();$('lockmsg').textContent='Unlocking…';if(!await tryOpen($('pass').value,true))$('lockmsg').textContent='That passcode didn’t work.'});
 fetch('data.enc.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(async E=>{ENC=E;let p=null;try{p=localStorage.getItem('jm-pass')}catch(e){}
   if(p&&await tryOpen(p,false))return;showLock()}).catch(e=>{$('lock').style.display='block';$('lockmsg').textContent='Today’s brief could not load. Check your connection.'});
