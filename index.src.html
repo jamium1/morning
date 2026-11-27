@@ -24,6 +24,20 @@ svg.terrain{width:100%;height:auto;display:block;color:var(--ink)}
 .act b{display:block;font-size:14px;margin-bottom:4px}.act p{margin:0;color:var(--soft);font-size:15px;line-height:1.45}
 .strip{margin-top:20px;display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--soft)}
 .strip span b{color:var(--ink);font-weight:600}
+
+.wx{border:1px solid var(--hair);border-radius:14px;padding:16px 16px 12px;background:var(--wash)}
+.wx-top{display:flex;align-items:center;gap:14px}.wx-ico{font-size:46px;line-height:1}
+.wx-now{font-size:44px;font-weight:300;line-height:1}.wx-sum{color:var(--soft);font-size:14px;line-height:1.45}
+.wx-sum b{color:var(--ink);font-weight:600}
+.wx-hours{display:flex;gap:4px;overflow-x:auto;margin:14px -4px 6px;padding:2px 4px 6px;scrollbar-width:none}
+.wx-hours::-webkit-scrollbar{display:none}
+.wx-h{flex:0 0 46px;text-align:center;font-size:12px;color:var(--soft)}.wx-h i{display:block;font-style:normal;font-size:20px;margin:3px 0}
+.wx-h b{display:block;color:var(--ink);font-size:14px;font-weight:600}.wx-h small{display:block;color:#3B82C4;font-size:11px;min-height:13px}
+.wx-days{border-top:1px solid var(--hair);margin-top:6px}
+.wx-d{display:grid;grid-template-columns:44px 26px 34px 1fr 30px 38px;align-items:center;gap:6px;padding:7px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.wx-d:last-child{border-bottom:0}.wx-d .lo{color:var(--soft);text-align:right}.wx-d .rn{color:#3B82C4;font-size:12px}
+.wx-bar{position:relative;height:5px;border-radius:3px;background:var(--hair)}.wx-bar span{position:absolute;top:0;bottom:0;border-radius:3px;background:linear-gradient(90deg,#7DB3E0,#E9A15B)}
+.wx-foot{font-size:12px;color:var(--grey);margin-top:8px}
 .meta{margin-top:10px;font-size:14px;color:var(--soft);line-height:1.5}
 h2{font-size:16px;font-weight:600;margin:38px 0 12px}
 .coll>h2,.coll .exam-h{cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
@@ -107,6 +121,7 @@ details.stim summary{cursor:pointer;color:var(--soft);font-size:14px;margin-top:
   <div class="meta" id="meta"></div>
 </div></section>
 <section><div class="wrap" id="main">
+  <h2 id="wxH">Weather</h2><div class="wx" id="wx"><p class="note" id="wxNote">Loading the forecast…</p></div>
   <h2>Today</h2><ol class="items" id="today"></ol>
   <h2 id="comingH">Coming up</h2><div class="timeline" id="coming"></div>
   <h2 id="newsH">News</h2><div id="news"></div>
@@ -267,11 +282,33 @@ function crossword(PZ){
   $('reveal').onclick=()=>{if(!cur)return;wc(cur[0],cur[1],dir).forEach(p=>{inp(p[0],p[1]).value=SOL[p[0]][p[1]];cells[p[0]][p[1]].classList.remove('bad')});chk()};
 }
 let DATA={};
+// Live weather from Open-Meteo (free, no key), fetched by the phone when the page opens. Location: Baulkham Hills.
+const WX={lat:-33.76,lon:150.99,place:'Baulkham Hills'};
+const wcode=c=>c==0?['☀️','Clear']:c<=2?['🌤️','Partly cloudy']:c==3?['☁️','Cloudy']:c<=48?['🌫️','Fog']:c<=57?['🌦️','Drizzle']:c<=67?['🌧️','Rain']:c<=77?['🌨️','Snow']:c<=82?['🌦️','Showers']:c<=86?['🌨️','Snow showers']:['⛈️','Thunderstorms'];
+async function weather(fallback){const box=$('wx');try{
+  const u=`https://api.open-meteo.com/v1/forecast?latitude=${WX.lat}&longitude=${WX.lon}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,relative_humidity_2m,is_day&hourly=temperature_2m,precipitation_probability,weather_code,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,uv_index_max,sunrise,sunset&timezone=Australia%2FSydney&forecast_days=7`;
+  const r=await fetch(u);if(!r.ok)throw 0;const W=await r.json();const C=W.current,Dd=W.daily,H=W.hourly;box.innerHTML='';
+  let [ico,txt]=wcode(C.weather_code);if(C.is_day===0&&C.weather_code<=2)ico='🌙';const top=el('div','wx-top');top.appendChild(el('div','wx-ico',ico));top.appendChild(el('div','wx-now',Math.round(C.temperature_2m)+'°'));
+  const sm=el('div','wx-sum');const hm=t=>t.slice(11,16);
+  sm.innerHTML=`<b>${txt}</b> · ${WX.place}<br>H ${Math.round(Dd.temperature_2m_max[0])}° L ${Math.round(Dd.temperature_2m_min[0])}° · feels ${Math.round(C.apparent_temperature)}°<br>Rain ${Dd.precipitation_probability_max[0]??0}% (${Dd.precipitation_sum[0]??0} mm) · UV ${Math.round(Dd.uv_index_max[0]??0)} · wind ${Math.round(C.wind_speed_10m)} km/h`;
+  top.appendChild(sm);box.appendChild(top);
+  const hrs=el('div','wx-hours');const now=C.time.slice(0,13);let i=H.time.findIndex(t=>t.slice(0,13)>=now);if(i<0)i=0;
+  for(let k=i;k<Math.min(i+24,H.time.length);k++){const h=el('div','wx-h');const hh=+H.time[k].slice(11,13);h.appendChild(document.createTextNode(k==i?'Now':((hh%12)||12)+(hh<12?'am':'pm')));
+    h.appendChild(el('i',null,(H.is_day&&!H.is_day[k]&&H.weather_code[k]<=2)?'🌙':wcode(H.weather_code[k])[0]));h.appendChild(el('b',null,Math.round(H.temperature_2m[k])+'°'));const p=H.precipitation_probability[k];h.appendChild(el('small',null,p>=20?p+'%':''));hrs.appendChild(h)}
+  box.appendChild(hrs);
+  const days=el('div','wx-days');const lo=Math.min(...Dd.temperature_2m_min),hi=Math.max(...Dd.temperature_2m_max);
+  Dd.time.forEach((t,k)=>{const row=el('div','wx-d');const dn=k==0?'Today':new Date(t+'T12:00').toLocaleDateString('en-AU',{weekday:'short'});
+    row.appendChild(el('span',null,dn));row.appendChild(el('span',null,wcode(Dd.weather_code[k])[0]));row.appendChild(el('span','lo',Math.round(Dd.temperature_2m_min[k])+'°'));
+    const bar=el('div','wx-bar');const sp=el('span');sp.style.left=((Dd.temperature_2m_min[k]-lo)/(hi-lo||1)*100)+'%';sp.style.right=((hi-Dd.temperature_2m_max[k])/(hi-lo||1)*100)+'%';bar.appendChild(sp);row.appendChild(bar);
+    row.appendChild(el('span',null,Math.round(Dd.temperature_2m_max[k])+'°'));row.appendChild(el('span','rn',(Dd.precipitation_probability_max[k]??0)>=20?Dd.precipitation_probability_max[k]+'%':''));days.appendChild(row)});
+  box.appendChild(days);box.appendChild(el('p','wx-foot',`Sunrise ${hm(Dd.sunrise[0])} · sunset ${hm(Dd.sunset[0])} · live from Open-Meteo, updated ${hm(C.time)}`));
+ }catch(e){box.innerHTML='';box.appendChild(el('p','note',fallback||'The live forecast couldn’t load.'))}}
+
 function render(D){
   DATA=D;$('dateLine').textContent=D.date_line||'';$('headline').textContent=D.headline||'';terrain(D.terrain);
   const A=$('acts');(D.acts||[]).forEach(a=>{const d=el('div','act');d.appendChild(el('b',null,a.time));d.appendChild(el('p',null,a.text));A.appendChild(d)});
   const cd=$('countdown');(D.countdown||[]).forEach(c=>{const s=el('span');const b=el('b',null,c.days===0?'today':c.days===1?'tomorrow':`${c.days} days`);s.appendChild(document.createTextNode(c.label+' '));s.appendChild(b);cd.appendChild(s)});
-  $('meta').textContent=[D.weather,D.moon,D.sky].filter(Boolean).join('  ·  ');
+  $('meta').textContent=[D.moon,D.sky].filter(Boolean).join('  ·  ');weather(D.weather);
   const T=$('today');(D.today||[]).forEach(it=>{const li=el('li');linkItem(li,it);T.appendChild(li)});
   const C=$('coming');if(!(D.coming||[]).length)$('comingH').style.display='none';(D.coming||[]).forEach(c=>{C.appendChild(el('div','d',c.d));const x=el('div');if(c.bold)x.appendChild(el('b',null,c.text));else x.textContent=c.text;C.appendChild(x)});
   const NW=$('news');(D.news||[]).forEach(sec=>{NW.appendChild(el('h3',null,sec.heading));const ol=el('ol','items');sec.items.forEach(it=>{const li=el('li');linkItem(li,it);ol.appendChild(li)});NW.appendChild(ol)});
