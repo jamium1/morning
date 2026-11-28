@@ -747,18 +747,6 @@
    "field": "Moriah+2021+w.+sol"
   },
   {
-   "id": "HUR25E1-a",
-   "source": "Hurlstone 2025 Ext 1 Trial (product to sum)",
-   "base": 5338,
-   "qpage": 9,
-   "spage": 13,
-   "topic": "product-to-sum",
-   "marks": 1,
-   "q": "Use the product-to-sum identity to write $\\cos\\theta\\sin2\\theta$ as a sum in simplest form.",
-   "sol": "$\\sin A\\cos B=\\frac12[\\sin(A+B)+\\sin(A-B)]$ with $A=2\\theta$, $B=\\theta$: $\\cos\\theta\\sin2\\theta=\\frac12(\\sin3\\theta+\\sin\\theta)$.",
-   "field": "Hurlstone+2025+w.+sol"
-  },
-  {
    "id": "NSB21E1-13c",
    "source": "North Sydney Boys 2021 Ext 1 Trial, Q13(c)",
    "base": 5338,
@@ -1081,18 +1069,6 @@
    "q": "Prove that $\\tan\\left(\\theta+\\dfrac\\pi4\\right)=\\sec2\\theta+\\tan2\\theta$ by using the substitution $t=\\tan\\theta$.",
    "sol": "LHS $=\\frac{t+1}{1-t}$.<br>RHS $=\\frac{1+t^2}{1-t^2}+\\frac{2t}{1-t^2}=\\frac{(1+t)^2}{(1-t)(1+t)}=\\frac{1+t}{1-t}$. So LHS $=$ RHS.",
    "field": "Sydney+Boys+2026+w.+sol"
-  },
-  {
-   "id": "SGHS24E1-12b",
-   "source": "Sydney Girls 2024 Ext 1 Trial, Q12(b)",
-   "base": 5338,
-   "qpage": 6,
-   "spage": 12,
-   "topic": "t-formulae",
-   "marks": 2,
-   "q": "By making the substitution $t=\\tan\\dfrac\\theta2$, or otherwise, show that $\\operatorname{cosec}\\theta+\\cot\\theta=\\cot\\dfrac\\theta2$.",
-   "sol": "$\\operatorname{cosec}\\theta+\\cot\\theta=\\frac{1+t^2}{2t}+\\frac{1-t^2}{2t}=\\frac{2}{2t}=\\frac1t=\\cot\\frac\\theta2$.",
-   "field": "Sydney+Girls+2024+w.+sol"
   },
   {
    "id": "SGS22E1-14d",
